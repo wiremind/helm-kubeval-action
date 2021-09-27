@@ -31,11 +31,13 @@ do
     helm repo add $REPO $URL;
 done < $CONFIG_FILE
 
+helm repo update
+
 # For all charts (i.e for every directory) in the directory
 for CHART in "$CHARTS_PATH"/*/; do
     echo "Validating $CHART Helm Chart...";
     cd "$CURRENT_DIR/$CHART";
-    helm dependency build;
+    helm dependency build --skip-refresh;
 
     if [ -d "ci" ]; then
         for VALUES_FILE in ci/*-values.yaml; do
